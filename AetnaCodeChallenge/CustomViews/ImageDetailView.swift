@@ -18,14 +18,14 @@ struct ImageDetailView: View {
                 .edgesIgnoringSafeArea(.all)
                 .padding()
             ZStack(alignment: .bottom) {
-                ScrollView {
+                ScrollView(showIndicators: false) {
                     VStack {
                         AsyncImage(
                             url: image.media.m,
                             content: { image in
                             image.resizable()
                                 .clipShape(RoundedRectangle(cornerRadius: 15.0, style: .continuous))
-                                .aspectRatio(contentMode: .fit) 
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: UIScreen.main.bounds.width - 40 ,height: 300)
                             
                         },
