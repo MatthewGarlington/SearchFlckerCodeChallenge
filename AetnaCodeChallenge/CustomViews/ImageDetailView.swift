@@ -18,7 +18,7 @@ struct ImageDetailView: View {
                 .edgesIgnoringSafeArea(.all)
                 .padding()
             ZStack(alignment: .bottom) {
-                ScrollView(showIndicators: false) {
+                ScrollView(showsIndicators: false) {
                     VStack {
                         AsyncImage(
                             url: image.media.m,
