@@ -11,24 +11,14 @@ import SwiftUI
 struct ImageSearchRowView: View {
     var image: Items
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            AsyncImage(url: image.media.m, scale: 0.8)
-                .clipShape(RoundedRectangle(cornerRadius: 15.0))
-            RoundedRectangle(cornerRadius: 15.0)
-                .fill(Material.ultraThin)
-                .frame(width: 300, height: 55)
-            VStack(alignment: .leading) {
+        VStack {
+        AsyncImage(url: image.media.m, scale: 1.9)
+            .clipShape(RoundedRectangle(cornerRadius: 15.0))
             Text(image.title)
-                .font(.subheadline)
-            Text(image.author)
-                .font(.caption)
-            }
-            .padding()
-            .foregroundStyle(.black)
-            .frame(width: 300)
-            .lineLimit(1)
-            .minimumScaleFactor(0.5)
+                .bold()
+                .font(.headline)
         }
+        .foregroundStyle(.black)
     }
 }
 

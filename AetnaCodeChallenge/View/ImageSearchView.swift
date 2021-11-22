@@ -8,30 +8,36 @@
 import SwiftUI
 
 struct ImageSearchView: View {
-    @Environment(\.dismiss) var dismiss
+    @StateObject fileprivate var viewModel = ViewModel()
+    @State private var selectedItems: Items?
+    @Namespace var namespace
     
-    @StateObject
-    fileprivate var viewModel = ViewModel()
+    let columns = [
+        GridItem(.adaptive(minimum: 120))
+    ]
     
     var body: some View {
-        ScrollView {
-            VStack {
-                ForEach(viewModel.image, id: \.self) { item in
-                    NavigationLink(destination: {
-                        ImageDetailView()
-                    }, label: {
+        ScrollView(showsIndicators: false) {
+            LazyVGrid(columns: columns) {
+                ForEach(viewModel.image, id: \.id) { item in
+                    Button { selectedItems = item} label: {
                         ImageSearchRowView(image: item)
-                    })
+                    }
+                    .matchedGeometryEffect(id: item.id, in: namespace)
                 }
-                
             }
         }
         .overlay {
             if viewModel.isSearching {
                 ProgressView()
             }
+            if let item = selectedItems {
+                ImageDetailView(namespace: namespace, selectedItems:
+                                    $selectedItems, image: item)
+            }
         }
-        .navigationTitle("Flickr Image Search")
+        .animation(.spring(dampingFraction: 0.7))
+        .navigationTitle("Search Flikr Image")
         .searchable(text: $viewModel.searchTerm)
         .onReceive(viewModel.$searchTerm) { searchTerm in
             async {

@@ -10,7 +10,6 @@ import SwiftUI
 @MainActor
 class ViewModel: ObservableObject {
     @Published var searchTerm: String = ""
-    
     @Published private(set) var image: [Items] = []
     @Published private(set) var isSearching = false
     
@@ -22,8 +21,7 @@ class ViewModel: ObservableObject {
         if currentSearchTerm.isEmpty {
             image = []
             isSearching = false
-        }
-        else {
+        } else {
             searchTask = async {
                 isSearching = true
                 image = await searchImages (matching: searchTerm)
@@ -36,11 +34,10 @@ class ViewModel: ObservableObject {
     
     private func searchImages(matching searchTerm: String) async -> [Items] {
         let escapedSearchTerm = searchTerm.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
-        let url = URL(string: "https://www.flickr.com/services/feeds/photos_public.gne?format=json&tags=\(escapedSearchTerm)&nojsoncallback=1")!
+        let url = URL(string: "https://www.flickr.com/services/feeds/photos_public.gne?format=json&tags=\(escapedSearchTerm)&nojsoncallback=1&lang=en-us")!
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            
             let searchResult = try Image.init(data: data)
             guard let imagesItems = searchResult.items else { return [] }
             return imagesItems.compactMap { Items(from: $0) }

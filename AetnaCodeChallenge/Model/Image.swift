@@ -6,18 +6,19 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Image: Codable, Hashable {
     var title: String
     var items: [Items]?
-    
     
     init(data: Data) throws {
       self = try JSONDecoder().decode(Image.self, from: data)
     }
 }
 
-struct Items: Codable, Hashable {
+struct Items: Codable, Hashable, Identifiable {
+    let id = UUID()
     var title: String
     var author: String
     var media: Media
@@ -34,6 +35,7 @@ extension Items {
         let author = items.author
         let dateTaken = items.date_taken
         let media = items.media
+        
         
         self.title = title
         self.author = author
